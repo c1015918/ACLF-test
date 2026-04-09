@@ -11,9 +11,11 @@ from pathlib import Path
 plt.rcParams['text.usetex'] = False  # 禁用 LaTeX mathtext
 
 # =========================
-# 计数文件
+# 计数文件与初始值
 # =========================
 COUNTER_FILE = Path("counter.json")
+INITIAL_VISIT_COUNT = 2503
+INITIAL_EVALUATION_COUNT = 2230
 
 def load_counters():
     if COUNTER_FILE.exists():
@@ -21,12 +23,15 @@ def load_counters():
             with open(COUNTER_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 return {
-                    "visit_count": data.get("visit_count", 0),
-                    "evaluation_count": data.get("evaluation_count", 0)
+                    "visit_count": data.get("visit_count", INITIAL_VISIT_COUNT),
+                    "evaluation_count": data.get("evaluation_count", INITIAL_EVALUATION_COUNT)
                 }
         except Exception:
             pass
-    return {"visit_count": 0, "evaluation_count": 0}
+    return {
+        "visit_count": INITIAL_VISIT_COUNT,
+        "evaluation_count": INITIAL_EVALUATION_COUNT
+    }
 
 def save_counters(counters):
     with open(COUNTER_FILE, "w", encoding="utf-8") as f:
